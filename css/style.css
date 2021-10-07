@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+html {
+  padding: 0;
+  margin: 0;
+  font-size: 48px;
+  font-family: "Roboto", sans-serif;
+}
+
+.body {
+  padding: 0;
+  margin: 0;
+  background-color: #F2F2F2;
+}
+
+.main {
+  max-width: 768px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: #FFFFFF;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.main__field {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: 1px solid #cacaca;
+  padding: 10px;
+  width: 100%;
+  background-color: #F5F5F5;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-align: right;
+}
+
+.main__field:focus {
+  outline: none;
+}
+
+.main__field::-webkit-input-placeholder {
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+
+.main__field:-ms-input-placeholder {
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+
+.main__field::-ms-input-placeholder {
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+
+.main__field::placeholder {
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+
+.main__keyboard {
+  height: 62.5vh;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[6];
+      grid-template-columns: repeat(6, 1fr);
+  -ms-grid-rows: (1fr)[5];
+      grid-template-rows: repeat(5, 1fr);
+}
+
+.main__button {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  background-color: #f1f1f1;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+  margin: 0;
+  border: 0;
+}
+
+.main__button:last-child {
+  background: #ffb25b;
+}
+
+.main__button:hover {
+  background-color: #ff6262;
+}
+
+.main__button:focus {
+  outline: 1px solid #cacaca;
+  outline-offset: -1px;
+}
+
+.main__button:active {
+  background-color: #70ff78;
+}
+
+@media screen and (max-width: 768px) {
+  .main__field {
+    font-size: 0.95rem;
+  }
+  .main__button {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .main__field {
+    font-size: 0.85em;
+  }
+  .main__button {
+    font-size: 0.85em;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .main__field {
+    font-size: 0.65em;
+  }
+  .main__button {
+    font-size: 0.65em;
+  }
+}
+/*# sourceMappingURL=style.css.map */

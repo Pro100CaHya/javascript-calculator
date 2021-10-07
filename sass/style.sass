@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+$body-background-color: #F2F2F2
+$main-background-color: #FFFFFF
+$main__field-background-color: #F5F5F5
+$main__field-border-color: #cacaca
+$main__button-background-color: #f1f1f1
+$main__button_last-child-background-color: #ffb25b
+$main__button_hover-background-color: #ff6262
+$main__button_active-background-color: #70ff78
+
+html 
+  padding: 0
+  margin: 0
+  font-size: 48px
+  font-family: "Roboto", sans-serif
+
+.body 
+  padding: 0
+  margin: 0
+  background-color: $body-background-color
+
+.main
+    max-width: 768px
+    min-height: 100vh
+    margin: 0 auto
+    background-color: $main-background-color
+    text-align: center
+    display: flex
+    flex-direction: column
+    justify-content: flex-end
+    &__field
+        box-sizing: border-box
+        border: 1px solid $main__field-border-color
+        padding: 10px
+        width: 100%
+        background-color: $main__field-background-color
+        font-size: 1rem
+        letter-spacing: 2px
+        text-align: right
+        &:focus
+            outline: none
+        &::placeholder
+            letter-spacing: 1px
+            opacity: 0.5
+    &__keyboard
+        height: 62.5vh
+        display: grid
+        grid-template-columns: repeat(6, 1fr)
+        grid-template-rows: repeat(5, 1fr)
+    &__button
+        box-sizing: border-box
+        background-color: $main__button-background-color
+        transition: background-color 0.3s
+        font-size: 1rem
+        margin: 0
+        border: 0
+    &__button
+        &:last-child
+            background: $main__button_last-child-background-color
+        &:hover
+            background-color: $main__button_hover-background-color
+        &:focus
+            outline: 1px solid $main__field-border-color
+            outline-offset: -1px
+        &:active
+            background-color: $main__button_active-background-color
+
+@media screen and (max-width: 768px) 
+    .main
+        &__field
+            font-size: 0.95rem
+        
+        &__button
+            font-size: 0.95rem
+
+@media screen and (max-width: 425px) 
+    .main
+        &__field
+            font-size: 0.85em
+        
+        &__button
+            font-size: 0.85em
+
+
+@media screen and (max-width: 320px) 
+    .main
+        &__field
+            font-size: 0.65em
+        
+        &__button
+            font-size: 0.65em
