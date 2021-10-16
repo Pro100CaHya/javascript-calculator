@@ -30,6 +30,22 @@ html {
           justify-content: flex-end;
 }
 
+.main__output {
+  width: 100%;
+  padding: 5px;
+  color: #ff5b5b;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border: none;
+  text-align: right;
+  font-size: 0.8rem;
+  letter-spacing: 1.6px;
+}
+
+.main__output:focus {
+  outline: none;
+}
+
 .main__field {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;

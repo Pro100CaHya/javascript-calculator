@@ -8,6 +8,7 @@ $main__button-background-color: #f1f1f1
 $main__button_last-child-background-color: #ffb25b
 $main__button_hover-background-color: #ff6262
 $main__button_active-background-color: #70ff78
+$main__output-color: #ff5b5b
 
 html 
   padding: 0
@@ -29,6 +30,17 @@ html
     display: flex
     flex-direction: column
     justify-content: flex-end
+    &__output
+        width: 100%
+        padding: 5px
+        color: $main__output-color
+        box-sizing: border-box
+        border: none
+        text-align: right
+        font-size: 0.8rem
+        letter-spacing: 1.6px
+        &:focus
+            outline: none
     &__field
         box-sizing: border-box
         border: 1px solid $main__field-border-color

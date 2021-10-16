@@ -1,5 +1,6 @@
-// Находим строку ввода
+// Находим строку ввода и поле вывода
 const calcStr = document.querySelector(".main__field");
+const output = document.querySelector(".main__output");
 
 /* Создаём вспомогательные переменные:
         calcArr - массив токенов
@@ -23,6 +24,38 @@ const firstErrorTokens = ["+", "×", "÷", "^", ")"];
 
 // Функция ввода токена
 function inputValue(arg) {
+
+    output.value = "";
+
+    if (arg === "=") {
+
+        // Преобразовываем массив поля ввода
+        let transArr = transformArr(calcArr);
+
+        // Инфиксную запись превращаем в обратную польскую
+        let resQueue = transformToReversePolishNotation(transArr);
+
+        /* Если вместо обратной польской вернулось false
+           То это значит, что скобки не согласованы */
+        if (resQueue === false) {
+            output.value = "Не согласованы скобки";
+            return;
+        }
+
+        // Вычисляем обратную польскую
+        let result = calcReversePolishNotation(resQueue);
+
+        /* Если вместо результата выражения вернулось false
+           Количество операторов и операндов не соответствует */
+        if (result === false) {
+            output.value = "Ошибка";
+            return;
+        }
+
+        // Если всё прошло успешно, то вывести результат
+        output.value = `Результат: ${result}`;
+        return;
+    }
 
     /* Если входной токен - "C", то очистить всё: строку поля ввода,
        массив поля ввода, переменную num, last */
@@ -166,5 +199,270 @@ function deleteOneSymbol() {
         num = String(calcArr[calcArr.length - 1]);
         last = num[num.length - 1];
     }
+
+}
+
+// Функция преобразования массива
+function transformArr(arg) {
+
+    let arr = [];
+    let index = 0;
+
+    /* Если в начале массива встречается "-"
+       то добавляем "0" перед массивом */
+    if (arg[0] === "-") {
+        arr.push("0", "-");
+        index++;
+    }
+
+    for (index; index < arg.length; index++) {
+
+        /* Если текущий элемент массива - "("
+           а следующий - "-", то между ними вставляем "0" */
+        if (arg[index] === "(" && arg[index + 1] === "-") {
+            arr.push("(", "0", "-");
+            index++;
+            continue;
+        }
+
+        /* Если текущий элемент массива - число или константа
+           а следующая - префиксная функция, то между ними вставляем "×" */
+        if (prefixTokens.includes(arg[index]) && (isFinite(arr[arr.length - 1])) || constants[arr[arr.length - 1]]) {
+            arr.push("×", arg[index]);
+        }
+
+        // Иначе просто добавляем текущий токен
+        else {
+            arr.push(arg[index]);
+        }
+
+    }
+
+    return arr;
+
+}
+
+function transformToReversePolishNotation(arg) {
+
+    // Создаём стек и очередь
+    let stack = [];
+    let queue = [];
+
+    // Пока есть входной токен
+    for (let token of arg) {
+        
+        // Если токен - число, кладём в очередь
+        if (isFinite(token)) {
+            queue.push(new Decimal(token));
+            continue;
+        }
+
+        // Если токен - константа, кладём в очередь
+        if (constants[token]) {
+            queue.push(new Decimal(constants[token]));
+            continue;
+        }
+
+        // Если токен - префиксная функция или открывающая скобка, кладём в стек
+        if (prefixTokens.includes(token) || token === "(") {
+            stack.push(token);
+            continue;
+        }
+
+        // Если токен - ")", то
+        if (token === ")") {
+
+            // Если в стеке нет "(", то скобки не согласованы
+            if (!stack.includes("(")) {
+                return false;
+            }
+            
+            /* Иначе пока на вершине стека - не "("
+               Выталкиваем элементы стека в очередь */
+            while (stack[stack.length - 1] !== "(") {
+                queue.push(stack.pop());
+            }
+
+            // Саму открывающую скобку просто убираем из стека
+            stack.pop();
+
+
+
+            continue;
+        }
+
+        // Если входной токен - бинарная функция
+        if (binaryTokens[token]) {
+
+            /* Пока на вершине стека префиксная функция
+               или операция на вершине стека приоритетнее входного токена
+               выталкиваем элемент стека в очередь */
+            while (prefixTokens.includes(stack[stack.length - 1]) || binaryTokens[stack[stack.length - 1]] >= binaryTokens[token]) {
+                queue.push(stack.pop());
+            }
+
+            // Кладём токен в стек
+            stack.push(token);
+            continue;
+
+        }
+    }
+
+    // Если в стеке есть "(", значит были не согласованы скобки
+    if (stack.includes("(")) {
+
+        return false;
+
+    }
+    
+    // Выталкиваем элементы стека в очередь
+    while (stack.length != 0) {
+
+        queue.push(stack.pop());
+
+    }
+
+    // Возвращаем очередь
+    return queue;
+}
+
+function calcReversePolishNotation(arg) {
+
+    // Создаём переменную счётчик
+    let index = 0;
+
+    // Пока счётчик меньше длины массива токенов
+    while (index < arg.length) {
+
+        // Создаём обработчик ошибок
+        try {
+
+            // Если входной токен - оператор, то выполнить действие оператора
+            switch (arg[index]) {
+            
+                case "+":
+                    arg[index - 2] = arg[index - 2].plus(arg[index - 1]);
+                    arg.splice(--index, 2);
+                    break;
+                case "-":
+                    arg[index - 2] = arg[index - 2].minus(arg[index - 1]);
+                    arg.splice(--index, 2);
+                    break;
+                case "×":
+                    arg[index - 2] = arg[index - 2].times(arg[index - 1]);
+                    arg.splice(--index, 2);
+                    break;
+                case "÷":
+                    arg[index - 2] = arg[index - 2].dividedBy(arg[index - 1]);
+                    arg.splice(--index, 2);
+                    break;
+                case "^":
+                    arg[index - 2] = arg[index - 2].toPower(arg[index - 1]);
+                    arg.splice(--index, 2);
+                    break;
+                case "√":
+                    arg[index - 1] = arg[index - 1].squareRoot();
+                    arg.splice(index, 1);
+                    break;
+                case "sin":
+                    arg[index - 1] = arg[index - 1].times(Decimal
+                                                                .acos(-1))
+                                                                .dividedBy(180)
+                                                                .sine();
+                    arg.splice(index, 1);
+                    break;
+                case "cos":
+                    arg[index - 1] = arg[index - 1].times(Decimal
+                                                                .acos(-1))
+                                                                .dividedBy(180)
+                                                                .cosine();
+                    arg.splice(index, 1);
+                    break;
+                case "tg":
+                    arg[index - 1] = arg[index - 1].times(Decimal
+                                                                .acos(-1))
+                                                                .dividedBy(180)
+                                                                .sine()
+                                                                .dividedBy(
+                                                                    arg[index - 1]
+                                                                    .times(Decimal.acos(-1))
+                                                                    .dividedBy(180)
+                                                                    .cosine()
+                                                                );
+                    arg.splice(index, 1);
+                    break;
+                case "lg₂":
+                    arg[index - 1] = arg[index - 1].log(2);
+                    arg.splice(index, 1);
+                    break;
+                case "lg₁₀":
+                    arg[index - 1] = arg[index - 1].log(10);
+                    arg.splice(index, 1);
+                    break;
+                case "ln":
+                    arg[index - 1] = arg[index - 1].log(constants.e);
+                    arg.splice(index, 1);
+                    break;
+
+                // Иначе увеличиваем счётчик на 1
+                default:
+                    index++;
+                    break;
+                    
+            }   
+        } 
+        
+        /* Если произошла ошибка (ошибка может возникнуть из-за
+            несоответствия операторов и операндов (например, было введено выражение
+            "5 + "), то вернуть false) */
+        catch (error) {
+
+            return false;
+
+        }
+
+    }
+
+    // Если длина массива не равна единице, то вернуть false
+    if (arg.length !== 1) {
+        return false;
+    }
+
+    // Результат округлить до 10 знаков после запятой
+    let result = roundNum(arg[0]);
+    return result;
+
+}
+
+// Функция округления результата
+function roundNum(arg) {
+
+    // В num кладём строковое представление числа
+    let num = arg.toString();
+
+    /* Если в num нет дробной части, или число представлено в виде
+       экспоненциальной записи, то вернуть аргумент */
+    if (!num.includes(".") || num.includes("e")) {
+        return arg;
+    }
+
+    // Делим число на целую и дробную часть
+    let integerPart = num.slice(0, num.indexOf("."));
+    let fractionalPart = num.slice(num.indexOf(".") + 1);
+
+    // Отдельно будем хранить нули, которые идут сразу после запятой
+    let zero = "";
+    
+    if (fractionalPart[0] === "0") {
+        zero = String(fractionalPart.match(/^0+/gm));
+    }
+
+    // Дробную часть округляем до нужного количества знаков
+    fractionalPart = String(Math.round(fractionalPart / (10 ** (fractionalPart.length - 10))));
+
+    // Возвращаем Decimal число в виде суммы целой части, точки, нулей после запятой и дробной округлённой части
+    num = new Decimal(integerPart + "." + zero + fractionalPart);
+
+    return num;
 
 }
