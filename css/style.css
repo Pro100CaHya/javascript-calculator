@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap");
 html {
   padding: 0;
   margin: 0;
@@ -30,9 +30,26 @@ html {
           justify-content: flex-end;
 }
 
+.main__section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 5px;
+}
+
+.main__history-button {
+  opacity: 0.3;
+  width: 48px;
+  height: 48px;
+}
+
+.main__history-button:hover {
+  opacity: 1;
+}
+
 .main__output {
   width: 100%;
-  padding: 5px;
+  padding: 0;
   color: #ff5b5b;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -95,9 +112,7 @@ html {
 .main__button {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  background-color: #f1f1f1;
-  -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
+  background: #f1f1f1;
   font-size: 1rem;
   margin: 0;
   border: 0;
@@ -120,9 +135,150 @@ html {
   background-color: #70ff78;
 }
 
+.history {
+  background: #0000009a;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.history__menu {
+  padding: 7.5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.history_closed {
+  display: none;
+}
+
+.history__body {
+  position: relative;
+  max-width: 768px;
+  background: #F2F2F2;
+  min-height: 100%;
+  margin: 0 auto;
+}
+
+.history__close-button {
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+.history__close-button:hover {
+  opacity: 1;
+}
+
+.history__close-button:before, .history__close-button:after {
+  position: absolute;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #333;
+}
+
+.history__close-button:before {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+.history__close-button::after {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+.history__clear-button {
+  opacity: 0.3;
+  width: 32px;
+  height: 32px;
+  margin: 0 0 0 25px;
+}
+
+.history__clear-button:hover {
+  opacity: 1;
+}
+
+.table {
+  color: #5e5e5e;
+  margin: 0 auto;
+  width: 95%;
+  border-spacing: 0;
+  text-align: left;
+  -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.12);
+          box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.12);
+  table-layout: fixed;
+}
+
+.table__caption {
+  font-size: 0.5rem;
+  padding: 20px 0 15px 0;
+}
+
+.table__head {
+  font-size: 0.45rem;
+  background: #dddddd;
+}
+
+.table__body .table__row:nth-of-type(even) {
+  background: #ebebeb;
+}
+
+.table__body .table__row:nth-of-type(odd) {
+  background: #f3f3f3;
+}
+
+.table__body {
+  font-size: 0.4rem;
+}
+
+.table__cell {
+  padding: 5px 10px;
+  border-bottom: 1px solid #c9c9c9;
+  border-right: 1px solid #c9c9c9;
+  overflow-x: auto;
+}
+
+.table__cell:first-child {
+  text-align: center;
+  max-width: 10px;
+  overflow-x: none;
+}
+
+.table__cell:last-child {
+  border-right: none;
+}
+
+.table__cell::-webkit-scrollbar {
+  height: 3px;
+}
+
+.table__cell::-webkit-scrollbar-track {
+  background: #eeeeee;
+}
+
+.table__cell::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.table__cell::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 @media screen and (max-width: 768px) {
   .main__field {
     font-size: 0.95rem;
+  }
+  .main__output {
+    font-size: 0.7rem;
   }
   .main__button {
     font-size: 0.95rem;
@@ -130,17 +286,47 @@ html {
 }
 
 @media screen and (max-width: 425px) {
+  .main__section {
+    padding: 5px;
+  }
+  .main__history-button {
+    width: 38px;
+    height: 38px;
+  }
+  .main__output {
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+  }
   .main__field {
     font-size: 0.85em;
   }
   .main__button {
     font-size: 0.85em;
   }
+  .table__caption {
+    font-size: 0,4rem;
+  }
+  .table__head {
+    font-size: 0.35rem;
+  }
+  .table__body {
+    font-size: 0.3rem;
+  }
+  .table__cell {
+    padding: 2.5px 5px;
+  }
 }
 
 @media screen and (max-width: 320px) {
   .main__field {
     font-size: 0.65em;
+  }
+  .main__history-button {
+    width: 32px;
+    height: 32px;
+  }
+  .main__output {
+    font-size: 0.5rem;
   }
   .main__button {
     font-size: 0.65em;

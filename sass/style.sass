@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
 
 $body-background-color: #F2F2F2
 $main-background-color: #FFFFFF
 $main__field-background-color: #F5F5F5
 $main__field-border-color: #cacaca
+$main__history-background-color: #0000009a
 $main__button-background-color: #f1f1f1
 $main__button_last-child-background-color: #ffb25b
 $main__button_hover-background-color: #ff6262
@@ -30,9 +31,18 @@ html
     display: flex
     flex-direction: column
     justify-content: flex-end
+    &__section
+        display: flex
+        padding: 5px
+    &__history-button
+        opacity: 0.3
+        width: 48px
+        height: 48px
+        &:hover
+            opacity: 1
     &__output
         width: 100%
-        padding: 5px
+        padding: 0
         color: $main__output-color
         box-sizing: border-box
         border: none
@@ -62,8 +72,7 @@ html
         grid-template-rows: repeat(5, 1fr)
     &__button
         box-sizing: border-box
-        background-color: $main__button-background-color
-        transition: background-color 0.3s
+        background: $main__button-background-color
         font-size: 1rem
         margin: 0
         border: 0
@@ -78,27 +87,134 @@ html
         &:active
             background-color: $main__button_active-background-color
 
+.history
+    background: $main__history-background-color
+    width: 100%
+    height: 100%
+    position: fixed
+    top: 0
+    left: 0
+    z-index: 2
+    &__menu
+        padding: 7.5px
+        display: flex
+        align-items: center
+    &_closed
+        display: none
+    &__body
+        position: relative
+        max-width: 768px
+        background: $body-background-color
+        min-height: 100%
+        margin: 0 auto
+    &__close-button
+        width: 32px
+        height: 32px
+        opacity: 0.3
+        cursor: pointer
+        &:hover
+            opacity: 1
+        &:before, &:after
+            position: absolute
+            content: ' '
+            height: 33px
+            width: 2px
+            background-color: #333
+        &:before
+            transform: rotate(45deg)
+        &::after
+            transform: rotate(-45deg)
+    &__clear-button
+        opacity: 0.3
+        width: 32px
+        height: 32px
+        margin: 0 0 0 25px
+        &:hover
+            opacity: 1
+
+.table
+    color: #5e5e5e
+    margin: 0 auto
+    width: 95%
+    border-spacing: 0
+    text-align: left
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.12)
+    table-layout: fixed
+    &__caption
+        font-size: 0.5rem
+        padding: 20px 0 15px 0
+    &__head
+        font-size: 0.45rem
+        background: #dddddd
+    &__body &__row:nth-of-type(even)
+        background: #ebebeb
+    &__body &__row:nth-of-type(odd)
+        background: #f3f3f3
+    &__body
+        font-size: 0.4rem
+    &__cell
+        padding: 5px 10px
+        border-bottom: 1px solid #c9c9c9
+        border-right: 1px solid #c9c9c9
+        overflow-x: auto
+    &__cell:first-child
+        text-align: center
+        max-width: 10px
+        overflow-x: none
+    &__cell:last-child
+        border-right: none
+    &__cell::-webkit-scrollbar 
+        height: 3px
+    &__cell::-webkit-scrollbar-track
+        background: #eeeeee
+    &__cell::-webkit-scrollbar-thumb
+        background: #888
+    &__cell::-webkit-scrollbar-thumb:hover
+        background: #555
+    
+
 @media screen and (max-width: 768px) 
     .main
         &__field
             font-size: 0.95rem
-        
+        &__output
+            font-size: 0.7rem
         &__button
             font-size: 0.95rem
 
 @media screen and (max-width: 425px) 
     .main
+        &__section
+            padding: 5px
+        &__history-button
+            width: 38px
+            height: 38px
+        &__output
+            font-size: 0.6rem
+            letter-spacing: 1px
         &__field
             font-size: 0.85em
-        
         &__button
             font-size: 0.85em
 
+    .table
+        &__caption
+            font-size: 0,4rem
+        &__head
+            font-size: 0.35rem
+        &__body
+            font-size: 0.3rem
+        &__cell
+            padding: 2.5px 5px
 
 @media screen and (max-width: 320px) 
     .main
         &__field
             font-size: 0.65em
-        
+        &__history-button
+            width: 32px
+            height: 32px
+        &__output
+            font-size: 0.5rem
         &__button
             font-size: 0.65em

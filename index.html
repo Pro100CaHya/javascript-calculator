@@ -10,7 +10,31 @@
 </head>
 <body class="body">
     <main class="main">
-        <input type="text" class="main__output" readonly>
+        <div class="main__section">
+            <input type="image" src="img/history_icon.svg" alt="" class="main__history-button" onclick="popupHistory(true)">
+            <input type="text" class="main__output" readonly>
+        </div>
+        <div class="history history_closed">
+            <div class="history__body">
+                <div class="history__menu">
+                    <div class="history__close-button" onclick="popupHistory(false)"></div>
+                    <input type="image" src="img/clear-all.svg" alt="Clear all" class="history__clear-button" onclick="clearLocalStorage()">
+                </div>
+                <table class="table">
+                    <caption class="table__caption">История вычислений</caption>
+                    <col width="35px">
+                    <thead class="table__head">
+                        <tr class="table__row">
+                            <th class="table__cell">#</th>
+                            <th class="table__cell">Выражение</th>
+                            <th class="table__cell">Значение</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table__body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <input type="text" class="main__field" placeholder="Input math exp" readonly>
         <div class="main__keyboard">
             <input type="button" class="main__button" value="π" onclick="inputValue('π')">
@@ -46,6 +70,7 @@
         </div>
     </main>
     <script src="js/decimal.js"></script>
+    <script src="js/history-popup.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>

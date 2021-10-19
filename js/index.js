@@ -53,7 +53,11 @@ function inputValue(arg) {
         }
 
         // Если всё прошло успешно, то вывести результат
+        if (result.includes("Infinity")) {
+            result = result.replace("Infinity", "ထ");
+        }
         output.value = `Результат: ${result}`;
+        localStorage.setItem(calcStr.value, result);
         return;
     }
 
@@ -227,7 +231,7 @@ function transformArr(arg) {
 
         /* Если текущий элемент массива - число или константа
            а следующая - префиксная функция, то между ними вставляем "×" */
-        if (prefixTokens.includes(arg[index]) && (isFinite(arr[arr.length - 1])) || constants[arr[arr.length - 1]]) {
+        if (prefixTokens.includes(arg[index]) && (isFinite(arr[arr.length - 1]) || constants[arr[arr.length - 1]])) {
             arr.push("×", arg[index]);
         }
 
@@ -368,27 +372,54 @@ function calcReversePolishNotation(arg) {
                     arg[index - 1] = arg[index - 1].times(Decimal
                                                                 .acos(-1))
                                                                 .dividedBy(180)
-                                                                .sine();
+                                                                .sine()
+                                                                .times(10000000000)
+                                                                .round()
+                                                                .dividedBy(10000000000);
                     arg.splice(index, 1);
                     break;
                 case "cos":
                     arg[index - 1] = arg[index - 1].times(Decimal
                                                                 .acos(-1))
                                                                 .dividedBy(180)
-                                                                .cosine();
+                                                                .cosine()
+                                                                .times(10000000000)
+                                                                .round()
+                                                                .dividedBy(10000000000);
+                    console.log(arg[index - 1].valueOf());
                     arg.splice(index, 1);
                     break;
                 case "tg":
-                    arg[index - 1] = arg[index - 1].times(Decimal
-                                                                .acos(-1))
-                                                                .dividedBy(180)
-                                                                .sine()
-                                                                .dividedBy(
-                                                                    arg[index - 1]
-                                                                    .times(Decimal.acos(-1))
-                                                                    .dividedBy(180)
-                                                                    .cosine()
-                                                                );
+                    let sin = arg[index - 1].times(Decimal
+                                                            .acos(-1))
+                                                            .dividedBy(180)
+                                                            .sine()
+                                                            .times(10000000000)
+                                                            .round()
+                                                            .dividedBy(10000000000);
+                    
+                    if (sin.valueOf() === "-0") {
+                        sin = sin.times(-1);
+                    }
+
+                    let cos = arg[index - 1].times(Decimal
+                                                            .acos(-1))
+                                                            .dividedBy(180)
+                                                            .cosine()
+                                                            .times(10000000000)
+                                                            .round()
+                                                            .dividedBy(10000000000);
+                                            
+                    if (cos.valueOf() === "-0") {
+                        cos = cos.times(-1);
+                    }
+
+                    arg[index - 1] = sin
+                                          .dividedBy(cos)
+                                          .times(10000000000)
+                                          .round()
+                                          .dividedBy(10000000000);
+
                     arg.splice(index, 1);
                     break;
                 case "lg₂":
@@ -443,7 +474,7 @@ function roundNum(arg) {
     /* Если в num нет дробной части, или число представлено в виде
        экспоненциальной записи, то вернуть аргумент */
     if (!num.includes(".") || num.includes("e")) {
-        return arg;
+        return num;
     }
 
     // Делим число на целую и дробную часть
@@ -461,7 +492,7 @@ function roundNum(arg) {
     fractionalPart = String(Math.round(fractionalPart / (10 ** (fractionalPart.length - 10))));
 
     // Возвращаем Decimal число в виде суммы целой части, точки, нулей после запятой и дробной округлённой части
-    num = new Decimal(integerPart + "." + zero + fractionalPart);
+    num = String(integerPart + "." + zero + fractionalPart);
 
     return num;
 
