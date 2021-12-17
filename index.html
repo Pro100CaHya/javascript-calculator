@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="src/css/style.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
     <title>JS Calculator</title>
 </head>
 <body class="body">
     <main class="main">
         <div class="main__section">
-            <input type="image" src="img/history_icon.svg" alt="" class="main__history-button" onclick="popupHistory(true)">
+            <input type="image" src="src/img/history_icon.svg" alt="" class="main__history-button" onclick="popupHistory(true)">
             <input type="text" class="main__output" readonly>
         </div>
         <div class="history history_closed">
             <div class="history__body">
                 <div class="history__menu">
                     <div class="history__close-button" onclick="popupHistory(false)"></div>
-                    <input type="image" src="img/clear-all.svg" alt="Clear all" class="history__clear-button" onclick="clearLocalStorage()">
+                    <input type="image" src="src/img/clear-all.svg" alt="Clear all" class="history__clear-button" onclick="clearLocalStorage()">
                 </div>
                 <table class="table">
                     <caption class="table__caption">История вычислений</caption>
@@ -69,8 +69,8 @@
             <input type="button" class="main__button" value="=" onclick="inputValue('=')">
         </div>
     </main>
-    <script src="js/decimal.js"></script>
-    <script src="js/history-popup.js"></script>
-    <script src="js/index.js"></script>
+    <script src="src/js/decimal.js"></script>
+    <script src="src/js/history-popup.js"></script>
+    <script src="src/js/index.js"></script>
 </body>
 </html>
